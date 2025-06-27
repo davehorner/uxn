@@ -9,7 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 WITH REGARD TO THIS SOFTWARE.
 */
 
-#define RAM_PAGES 0x10
+#define BANKS 0x10
+#define BANKS_CAP BANKS * 0x10000
 
 int system_error(char *msg, const char *err);
 int system_boot(Uint8 *ram, char *rom_path, int has_args);
