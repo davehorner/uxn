@@ -14,8 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 WITH REGARD TO THIS SOFTWARE.
 */
 
-#define PAGE_INDEX(bank, addr) ((bank) * PAGE_SIZE + ((addr) & PAGE_MASK))
-
 char *boot_path;
 
 static void
@@ -86,37 +84,26 @@ system_deo(Uint8 port)
 {
 	switch(port) {
 	case 0x3: {
+		Uint16 value;
 		Uint16 addr = PEEK2(uxn.dev + 2);
 		Uint8 *aptr = uxn.ram + addr;
 		Uint16 length = PEEK2(aptr + 1);
 		if(uxn.ram[addr] == 0x0) {
-			unsigned int src_bank = PEEK2(aptr + 3);
-			unsigned int src_addr = PEEK2(aptr + 5);
-			Uint16 value = uxn.ram[addr + 7];
-			if(src_bank < RAM_PAGES) {
-				unsigned int a = src_addr;
-				unsigned int b = a + length;
-				for(; a < b; uxn.ram[PAGE_INDEX(src_bank, a++)] = value);
-			}
+			unsigned int a = PEEK2(aptr + 3) * PAGE_SIZE + PEEK2(aptr + 5);
+			unsigned int b = a + length;
+			value = uxn.ram[addr + 7];
+			for(; a < b; uxn.ram[a++] = value);
 		} else if(uxn.ram[addr] == 0x1) {
-			unsigned int src_bank = PEEK2(aptr + 3);
-			unsigned int src_addr = PEEK2(aptr + 5);
-			unsigned int dst_bank = PEEK2(aptr + 7);
-			unsigned int dst_addr = PEEK2(aptr + 9);
-			if(src_bank < RAM_PAGES && dst_bank < RAM_PAGES) {
-				unsigned int src_last = src_addr + length;
-				for(; src_addr < src_last; uxn.ram[PAGE_INDEX(dst_bank, dst_addr++)] = uxn.ram[PAGE_INDEX(src_bank, src_addr++)]);
-			}
+			unsigned int a = PEEK2(aptr + 3) * PAGE_SIZE + PEEK2(aptr + 5);
+			unsigned int b = a + length;
+			unsigned int c = PEEK2(aptr + 7) * PAGE_SIZE + PEEK2(aptr + 9);
+			for(; a < b; uxn.ram[c++] = uxn.ram[a++]);
 		} else if(uxn.ram[addr] == 0x2) {
-			unsigned int src_bank = PEEK2(aptr + 3);
-			unsigned int src_addr = PEEK2(aptr + 5);
-			unsigned int dst_bank = PEEK2(aptr + 7);
-			unsigned int dst_addr = PEEK2(aptr + 9);
-			if(src_bank < RAM_PAGES && dst_bank < RAM_PAGES) {
-				unsigned int src_last = src_addr + length;
-				unsigned int dst_last = dst_addr + length;
-				for(; src_last > src_addr; uxn.ram[PAGE_INDEX(dst_bank, --dst_last)] = uxn.ram[PAGE_INDEX(src_bank, --src_last)]);
-			}
+			unsigned int a = PEEK2(aptr + 3) * PAGE_SIZE + PEEK2(aptr + 5);
+			unsigned int b = a + length;
+			unsigned int c = PEEK2(aptr + 7) * PAGE_SIZE + PEEK2(aptr + 9);
+			unsigned int d = c + length;
+			for(; b >= a; uxn.ram[--d] = uxn.ram[--b]);
 		} else
 			fprintf(stderr, "Unknown Expansion Command 0x%02x\n", uxn.ram[addr]);
 		break;
