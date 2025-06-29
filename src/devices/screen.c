@@ -50,7 +50,8 @@ screen_change(int x1, int y1, int x2, int y2)
 void
 screen_palette(void)
 {
-	int i, shift, colors[4];
+	int i, shift;
+	unsigned long colors[4];
 	for(i = 0, shift = 4; i < 4; ++i, shift ^= 4) {
 		Uint8
 			r = (uxn.dev[0x8 + i / 2] >> shift) & 0xf,

@@ -64,7 +64,7 @@ MSYS_NT*|MINGW*) # MSYS2 on Windows
 	fi
 	;;
 Darwin) # macOS
-	CFLAGS="${CFLAGS} -Wno-typedef-redefinition -D_C99_SOURCE"
+	CFLAGS="${CFLAGS} -Wno-typedef-redefinition -D_C99_SOURCE -D_DARWIN_BETTER_REALPATH"
 	UXNEMU_LDFLAGS="$(sdl2-config --cflags --static-libs)"
 	;;
 Linux|*)
