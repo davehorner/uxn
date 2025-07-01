@@ -68,38 +68,34 @@ system_reboot(int soft)
 }
 
 static void
-system_expansion(const Uint16 addr)
+system_expansion(const Uint16 exp)
 {
-	Uint8 *aptr = uxn.ram + addr;
-	Uint16 length = PEEK2(aptr + 1);
-	if(uxn.ram[addr] == 0x0) {
-		unsigned int src_bank = PEEK2(aptr + 3);
-		unsigned int src_addr = PEEK2(aptr + 5);
-		unsigned int src_value = uxn.ram[addr + 7];
-		unsigned int a = src_bank * 0x10000 + src_addr;
-		unsigned int b = a + length;
-		for(b = b < BANKS_CAP ? b : BANKS_CAP; a < b; uxn.ram[a++] = src_value);
-	} else if(uxn.ram[addr] == 0x1) {
-		unsigned int src_bank = PEEK2(aptr + 3);
-		unsigned int src_addr = PEEK2(aptr + 5);
-		unsigned int dst_bank = PEEK2(aptr + 7);
+	Uint8 *aptr = uxn.ram + exp;
+	unsigned short length = PEEK2(aptr + 1), limit;
+	unsigned int bank = PEEK2(aptr + 3) * 0x10000;
+	unsigned int addr = PEEK2(aptr + 5);
+	if(uxn.ram[exp] == 0x0) {
+		unsigned int dst_value = uxn.ram[exp + 7];
+		unsigned short a = addr;
+		if(bank < BANKS_CAP)
+			for(limit = a + length; a != limit; a++)
+				uxn.ram[bank + a] = dst_value;
+	} else if(uxn.ram[exp] == 0x1) {
+		unsigned int dst_bank = PEEK2(aptr + 7) * 0x10000;
 		unsigned int dst_addr = PEEK2(aptr + 9);
-		unsigned int a = src_bank * 0x10000 + src_addr;
-		unsigned int b = a + length;
-		unsigned int c = dst_bank * 0x10000 + dst_addr;
-		for(b = b < BANKS_CAP ? b : BANKS_CAP; a < b; uxn.ram[c++] = uxn.ram[a++]);
-	} else if(uxn.ram[addr] == 0x2) {
-		unsigned int src_bank = PEEK2(aptr + 3);
-		unsigned int src_addr = PEEK2(aptr + 5);
-		unsigned int dst_bank = PEEK2(aptr + 7);
+		unsigned short a = addr, c = dst_addr;
+		if(bank < BANKS_CAP && dst_bank < BANKS_CAP)
+			for(limit = a + length; a != limit; c++, a++)
+				uxn.ram[dst_bank + c] = uxn.ram[bank + a];
+	} else if(uxn.ram[exp] == 0x2) {
+		unsigned int dst_bank = PEEK2(aptr + 7) * 0x10000;
 		unsigned int dst_addr = PEEK2(aptr + 9);
-		unsigned int a = src_bank * 0x10000 + src_addr;
-		unsigned int b = a + length;
-		unsigned int c = dst_bank * 0x10000 + dst_addr;
-		unsigned int d = c + length;
-		for(; b > a; uxn.ram[--d] = uxn.ram[--b]);
+		unsigned short a = addr + length - 1, c = dst_addr + length - 1;
+		if(bank < BANKS_CAP && dst_bank < BANKS_CAP)
+			for(limit = addr - 1; a != limit; a--, c--)
+				uxn.ram[dst_bank + c] = uxn.ram[bank + a];
 	} else
-		fprintf(stderr, "Unknown command: %s\n", &uxn.ram[addr]);
+		fprintf(stderr, "Unknown command: %s\n", &uxn.ram[exp]);
 }
 
 /* IO */
