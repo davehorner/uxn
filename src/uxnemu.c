@@ -426,7 +426,13 @@ emu_run(char *rom_path)
 	window_created = 1;
 	if(fullscreen)
 		window_flags = window_flags | SDL_WINDOW_FULLSCREEN_DESKTOP;
-	emu_window = SDL_CreateWindow(rom_path,
+
+	char *window_name = rom_path;
+	char *rom_name = metadata_read_name();
+	if (strlen(rom_name))
+		window_name = rom_name;
+
+	emu_window = SDL_CreateWindow(rom_name,
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		uxn_screen.width * zoom,

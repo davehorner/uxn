@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../uxn.h"
 #include "system.h"
@@ -15,6 +16,11 @@ WITH REGARD TO THIS SOFTWARE.
 */
 
 char *boot_path;
+Uint16 metadata_addr;
+
+#define METADATA_LEN 256
+/* allocate one more to ensure a null terminator */
+char metadata_buffer[METADATA_LEN + 1];
 
 static void
 system_print(char *name, Stack *s)
@@ -98,6 +104,27 @@ system_expansion(const Uint16 exp)
 		fprintf(stderr, "Unknown command: %s\n", &uxn.ram[exp]);
 }
 
+char *metadata_read_name() {
+	int i;
+
+	if (metadata_addr == 0)
+		/* we probably do not have any metadata */
+		return metadata_buffer;
+
+	if (uxn.ram[metadata_addr] != 0x00)
+		/* metadata should start with a 0 */
+		return metadata_buffer;
+
+	for (i = 1; i < METADATA_LEN; i++) {
+		char c = uxn.ram[metadata_addr + i];
+		if (c == 0x00 || c == 0x0a)
+			break;
+
+		metadata_buffer[i-1] = c;
+	}
+	return metadata_buffer;
+}
+
 /* IO */
 
 Uint8
@@ -123,6 +150,9 @@ system_deo(Uint8 port)
 		break;
 	case 0x5:
 		uxn.rst.ptr = uxn.dev[5];
+		break;
+	case 0x7:
+		metadata_addr = PEEK2(&uxn.dev[0x6]);
 		break;
 	case 0xe:
 		system_print("WST", &uxn.wst);

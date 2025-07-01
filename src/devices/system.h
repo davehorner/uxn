@@ -15,6 +15,7 @@ WITH REGARD TO THIS SOFTWARE.
 int system_error(char *msg, const char *err);
 int system_boot(Uint8 *ram, char *rom_path, int has_args);
 int system_reboot(int soft);
+char *metadata_read_name();
 
 Uint8 system_dei(Uint8 addr);
 void system_deo(Uint8 addr);
