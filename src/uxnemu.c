@@ -257,6 +257,7 @@ emu_init_audio(void)
 static int
 emu_init(void)
 {
+	SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
 		return system_error("sdl", SDL_GetError());
 	emu_init_audio();
