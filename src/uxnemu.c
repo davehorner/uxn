@@ -418,20 +418,15 @@ handle_events(void)
 }
 
 static int
-emu_run(char *rom_path)
+emu_run(void)
 {
 	Uint64 next_refresh = 0;
 	Uint64 frame_interval = SDL_GetPerformanceFrequency() / 60;
 	Uint32 window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
+	char *rom_name = metadata_read_name();
 	window_created = 1;
 	if(fullscreen)
 		window_flags = window_flags | SDL_WINDOW_FULLSCREEN_DESKTOP;
-
-	char *window_name = rom_path;
-	char *rom_name = metadata_read_name();
-	if (strlen(rom_name))
-		window_name = rom_name;
-
 	emu_window = SDL_CreateWindow(rom_name,
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
@@ -476,7 +471,7 @@ main(int argc, char **argv)
 	/* flags */
 	if(argc > 1 && argv[i][0] == '-') {
 		if(!strcmp(argv[i], "-v"))
-			return system_error("Uxn(gui) - Varvara Emulator", "30 Jun 2025.");
+			return system_error("Uxn(gui) - Varvara Emulator", "10 Jul 2025.");
 		else if(!strcmp(argv[i], "-2x"))
 			set_zoom(2, 0);
 		else if(!strcmp(argv[i], "-3x"))
@@ -493,7 +488,7 @@ main(int argc, char **argv)
 		return system_error("usage:", "uxnemu [-v | -f | -2x | -3x] file.rom [args...]");
 	/* start */
 	console_arguments(i, argc, argv);
-	emu_run(rom_path);
+	emu_run();
 	/* end */
 	SDL_CloseAudioDevice(audio_id);
 #ifdef _WIN32

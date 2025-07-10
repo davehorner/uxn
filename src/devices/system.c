@@ -104,23 +104,25 @@ system_expansion(const Uint16 exp)
 		fprintf(stderr, "Unknown command: %s\n", &uxn.ram[exp]);
 }
 
-char *metadata_read_name() {
+char *
+metadata_read_name()
+{
 	int i;
 
-	if (metadata_addr == 0)
+	if(metadata_addr == 0)
 		/* we probably do not have any metadata */
 		return metadata_buffer;
 
-	if (uxn.ram[metadata_addr] != 0x00)
+	if(uxn.ram[metadata_addr] != 0x00)
 		/* metadata should start with a 0 */
 		return metadata_buffer;
 
-	for (i = 1; i < METADATA_LEN; i++) {
+	for(i = 1; i < METADATA_LEN; i++) {
 		char c = uxn.ram[metadata_addr + i];
-		if (c == 0x00 || c == 0x0a)
+		if(c == 0x00 || c == 0x0a)
 			break;
 
-		metadata_buffer[i-1] = c;
+		metadata_buffer[i - 1] = c;
 	}
 	return metadata_buffer;
 }
