@@ -108,20 +108,16 @@ char *
 metadata_read_name()
 {
 	int i;
-
+	for(i = 0; i < METADATA_LEN + 1; i++)
+		metadata_buffer[i] = 0;
 	if(metadata_addr == 0)
-		/* we probably do not have any metadata */
 		return metadata_buffer;
-
 	if(uxn.ram[metadata_addr] != 0x00)
-		/* metadata should start with a 0 */
 		return metadata_buffer;
-
 	for(i = 1; i < METADATA_LEN; i++) {
 		char c = uxn.ram[metadata_addr + i];
 		if(c == 0x00 || c == 0x0a)
 			break;
-
 		metadata_buffer[i - 1] = c;
 	}
 	return metadata_buffer;
