@@ -105,7 +105,7 @@ system_expansion(const Uint16 exp)
 }
 
 char *
-metadata_read_name()
+metadata_read_name(void)
 {
 	int i;
 	for(i = 0; i < METADATA_LEN + 1; i++)
