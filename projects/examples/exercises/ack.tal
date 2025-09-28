@@ -1,0 +1,6 @@
+#02 #02 ack BRK
+
+@ack ( m n -- r )
+	OVR ?{ NIP INC JMP2r }
+	DUP ?{ INC SUB #01 !ack }
+	#0101 SUB2 OVR INC SWP ack !ack
