@@ -54,6 +54,35 @@ cd uxn
 
 If you'd like to work with the Console device in `uxnemu.exe`, run `./build.sh --console` instead: this will bring up an extra window for console I/O unless you run `uxnemu.exe` in Command Prompt or PowerShell.
 
+### Docker
+
+A Dockerfile file is provided to get you started using uxn via docker. cd into uxn folder, Dockerfile is toplevel.
+
+```sh
+docker build -t uxn-linux .
+```
+
+The binaries are built in the image and accessible.  The following builds and runs fizzbuzz from toplevel uxn folder.  
+```sh
+docker run --rm -v ".:/s" -w /s/projects/examples/exercises --entrypoint /app/bin/uxnasm uxn-linux fizzbuzz.tal /s/fizzbuzz.rom
+docker run --rm -v ".:/s" -w /s --entrypoint /app/bin/uxncli uxn-linux fizzbuzz.rom
+```
+Here's an example assembling cirlces.
+```sh
+docker run --rm -v ".:/s" -w /s/projects/examples/demos --entrypoint /app/bin/uxnasm uxn-linux circles.tal /s/circles.rom
+```
+uxnemu emulator requires a real renderer; so you'll need an emulator on the host for graphical roms.
+
+Build uxndis and run uxndis against itself.
+```sh
+git clone https://git.sr.ht/~rabbits/uxndis .uxndis
+docker run --rm -v ".:/s" -w /s/.uxndis --entrypoint /app/bin/uxnasm uxn-linux src/uxndis.tal /s/uxndis.rom
+docker run --rm -v ".:/s" -w /s --entrypoint /app/bin/uxncli uxn-linux /s/uxndis.rom /s/uxndis.rom
+```
+Some benefits of using uxn this way:
+  - brifblim path name limitations can be mitigated by mapping volumes via -v and setting working directory -w.  
+    input and output names work when using long paths.
+
 ## Getting Started
 
 ### Emulator
