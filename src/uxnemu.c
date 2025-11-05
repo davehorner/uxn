@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <time.h>
+#ifndef _WIN32
 #include <unistd.h>
+#else
+#include <io.h>
+#define read(fd, buf, count) _read(fd, buf, count)
+#define close(fd) _close(fd)
+#endif
 
 #include "uxn.h"
 

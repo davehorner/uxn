@@ -1,0 +1,32 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "${workspaceFolder}",
+            "binaryPath": "${workspaceFolder}/bin/uxncli.exe",
+            "binaryArgs": ["test.rom"]
+        },
+        {
+            "cwd": "${workspaceFolder}",
+            "binaryPath": "${workspaceFolder}/bin/uxnemu.exe", 
+            "binaryArgs": ["test.rom"]
+        }
+    ],
+    "makefile.configurations": [
+        {
+            "name": "Default",
+            "makeArgs": ["/f", "Makefile.mak"],
+            "makePath": "nmake",
+            "makefilePath": "${workspaceFolder}/Makefile.mak"
+        }
+    ],
+    "makefile.defaultLaunchConfiguration": {
+        "cwd": "${workspaceFolder}",
+        "binaryPath": "${workspaceFolder}/bin/uxncli.exe",
+        "binaryArgs": ["test.rom"]
+    },
+    "files.associations": {
+        "*.mak": "makefile",
+        "*.mk": "makefile",
+        "Makefile.mak": "makefile"
+    }
+}

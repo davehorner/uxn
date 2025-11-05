@@ -54,6 +54,20 @@ cd uxn
 
 If you'd like to work with the Console device in `uxnemu.exe`, run `./build.sh --console` instead: this will bring up an extra window for console I/O unless you run `uxnemu.exe` in Command Prompt or PowerShell.
 
+### Windows (Native Build)
+
+For native Windows builds using Microsoft Visual C++, see [README_Windows.md](README_Windows.md) for detailed instructions. This includes:
+- Building with Visual Studio and nmake
+- Automatic dependency management with vcpkg
+- VS Code integration with Microsoft C++ extension
+- Full file system support using Windows APIs
+
+Quick start:
+```cmd
+nmake /f Makefile.mak setup
+nmake /f Makefile.mak all
+```
+
 ### Docker
 
 A Dockerfile file is provided to get you started using uxn via docker. cd into uxn folder, Dockerfile is toplevel.

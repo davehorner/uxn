@@ -15,3 +15,17 @@
 *.rom.sym
 
 *.[o0125678vqki]
+
+# Windows executables
+*.exe
+*.obj
+*.rom
+
+# Generated test files
+test-cli.tal
+test-cli.rom
+test-gui.tal
+test-gui.rom
+
+# vcpkg installed packages
+vcpkg_installed/

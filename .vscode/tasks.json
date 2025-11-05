@@ -1,0 +1,132 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build All",
+            "type": "shell",
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "all"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "detail": "Build all UXN executables"
+        },
+        {
+            "label": "Setup Dependencies",
+            "type": "shell", 
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "setup"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "detail": "Install vcpkg and SDL2 dependencies"
+        },
+        {
+            "label": "Build UXN Assembler",
+            "type": "shell",
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "bin\\uxnasm.exe"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "detail": "Build just the UXN assembler"
+        },
+        {
+            "label": "Build UXN CLI",
+            "type": "shell",
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "bin\\uxncli.exe"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "detail": "Build the UXN CLI emulator"
+        },
+        {
+            "label": "Build UXN GUI",
+            "type": "shell",
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "bin\\uxnemu.exe"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "detail": "Build the UXN GUI emulator"
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "clean"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "detail": "Clean built files"
+        },
+        {
+            "label": "Test CLI",
+            "type": "shell",
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "test"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "detail": "Test the CLI emulator"
+        },
+        {
+            "label": "Test GUI",
+            "type": "shell",
+            "command": "nmake",
+            "args": ["/f", "Makefile.mak", "test-gui"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "detail": "Test the GUI emulator"
+        }
+    ]
+}

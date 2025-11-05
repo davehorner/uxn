@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug UXN CLI",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/uxncli.exe",
+            "args": ["test.rom"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Build UXN CLI"
+        },
+        {
+            "name": "Debug UXN GUI",
+            "type": "cppvsdbg", 
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/uxnemu.exe",
+            "args": ["test.rom"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Build UXN GUI"
+        },
+        {
+            "name": "Debug UXN Assembler",
+            "type": "cppvsdbg",
+            "request": "launch", 
+            "program": "${workspaceFolder}/bin/uxnasm.exe",
+            "args": ["test.tal", "test_debug.rom"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Build UXN Assembler"
+        }
+    ]
+}
